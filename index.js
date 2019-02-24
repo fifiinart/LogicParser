@@ -1,5 +1,5 @@
 const LogicTree = require("./tree.js");
-
+let flag = false;
 // Input expression:
 // Get process.stdin as the standard input object.
 var standardInput = process.stdin;
@@ -16,7 +16,16 @@ standardInput.on('data', function (data) {
     process.exit()
   }
   else {
-  tree = new LogicTree(data);
-  console.log(tree.makeTable().join("\n"));
+    flag = false;
+    try {
+      tree = new LogicTree(data);
+    } catch (e) {
+      flag = true;
+    }
+    if (flag) {
+      console.log("Invalid Expression");
+    } else {
+      console.log(tree.makeTable().join("\n"));
+    }
   }
 });
