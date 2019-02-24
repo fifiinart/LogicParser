@@ -4,7 +4,7 @@ This is a node.js version of FellowHashbrown's [PyLogic](https://github.com/Fell
 This is a Node.js project for parsing and evaluating logical expressions such as those in Discrete Mathematics.
 
 ## Process of Parsing
-In order to parse a logical expression, LogicParser will use the `parseExpression` function in logic/tree.js to iterate through the entire expression. It removes all the spaces beforehand because spaces don't necessarily matter in the parsing.
+In order to parse a logical expression, LogicParser will use the `parseExpression` function in tree.js to iterate through the entire expression. It removes all the spaces beforehand because spaces don't necessarily matter in the parsing.
 
 It will then return an `object` of information pertaining to the expression that will be stored as a `LogicNode` instance as the root of a `LogicTree`. Each value is then parsed through (recursively if needed) to create instances to use in the final evaluation.
 
@@ -59,4 +59,4 @@ Here are some examples:
 As you can tell with that last one, parentheses are automatically added because each logical expression is parsed as a `{left} {operator} {right}` value.
 
 ## Feedback, Sugesstions, Bugs
-Any feedback, suggestions, or bugs can be mentioned in my [Discord Server](https://discord.gg/KK2fQe5).
+Any feedback, suggestions, or bugs can be mentioned in my [Discord Developer Server](https://discord.gg/KK2fQe5).
