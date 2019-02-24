@@ -215,6 +215,59 @@ getTruthValue = function(value, power) {
   return Math.floor(value / (2 ** power)) % 2 === 0;
 }
 
+function isExpressionValid(expression) {
+
+    // Remove parentheses and spaces and nots
+    expression = expression.replace("(", "").replace(")", "").replace(" ", "").replace("~", "");
+
+    // Iterate through operators and split by it
+    // Find if there are variables containing multiple characters
+    for (const operator of LogicNode.operators) {
+        let tokenSplit = expression.split(operator);
+        if (tokenSplit.length > 1) {
+
+            // Go through each index of the tokenSplit array
+            // And check if the item has multiple characters
+            for (const item of tokenSplit) {
+
+                // Check if length of item is greater than 1
+                if (item.length > 1) {
+
+                    // Check if item has an operator in last or first index
+                    if (item[0] in LogicNode.operators || item[item.length - 1] in LogicNode.operators) {
+                        return false;
+                    }
+
+                    // Check if there are any operators in the item
+                    let found = false;
+                    for (const tempOp of LogicNode.operators) {
+                        if (tempOp in item) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    // If no operators are found, the item is invalid
+                    // It just has "ab" or something of the sort
+                    if (!found) {
+                        return false;
+                    }
+
+                    // recursive call
+                    return isExpressionValid(item);
+                }
+
+                // Check if length of item is 0
+                else if (item.length == 0) {
+                    return false;
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
 function parseExpression(expression, hasNot = false, operatorType = null) {
 
   // Remove all spaces from expressions
@@ -258,22 +311,11 @@ function parseExpression(expression, hasNot = false, operatorType = null) {
   let charHasNot = false;
   let tempHasNot = false;
 
-  // Iterate through operators and split by it
-  // Find if there are variables containing multiple characters
-  for (const tempOperator of LogicNode.operators) {
-    let tokenSplit = expression.split(tempOperator);
-    if (tokenSplit.length > 1) {
-      // Go through each index of the tokenSplit array
-      // And check if the token has multiple characters or none
-      for (const token of tokenSplit) {
-        if (token.length != 1) {
-          throw new errors.ValueError("You cannot have a variable with multiple characters.");
-        }
-      }
-      // Everything was okay, stop searching through operators
-      break;
-    }
+  // Check if expression is valid
+  if (!isExpressionValid(expression)) {
+      throw new errors.ValueError("That is an invalid expression.");
   }
+
   for (const index in expression) {
     let char = expression[index];
     // Check for open parenthesis
