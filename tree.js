@@ -241,7 +241,7 @@ function isExpressionValid(expression) {
                     // Check if there are any operators in the item
                     let found = false;
                     for (const tempOp of LogicNode.operators) {
-                        if (tempOp in item) {
+                            if (~item.indexOf(tempOp)) {
                             found = true;
                             break;
                         }
