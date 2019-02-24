@@ -215,14 +215,31 @@ getTruthValue = function(value, power) {
   return Math.floor(value / (2 ** power)) % 2 === 0;
 }
 
-function parseExpression(expression, hasNot = false) {
+function parseExpression(expression, hasNot = false, operatorType = null) {
 
   // Remove all spaces from expressions
-  expression = expression.replace(/\x20/g, "");
+  expression = expression.replace(/[\x00-\x20]/g, "");
 
   // Standardize all operators
   let regex;
   for (const operator in operators) {
+
+    // Find first operator that can be replaced and set operatorType to the proper type
+    if (~expression.indexOf(operator) && operatorType == null) {
+
+      // Iterate through operator types
+      for (const opType of [LogicNode.discrete, LogicNode.java, LogicNode.pseudo]) {
+        if (valueIn(operator.toLowerCase(), operators[opType])) {
+          operatorType = opType;
+          break;
+        }
+      }
+
+      if (operatorType == null) {
+        operatorType = LogicNode.discrete;
+      }
+    }
+
     if (~expression.indexOf(operator)) {
       regex = new RegExp(operator, 'g')
       expression = expression.replace(regex, operators[operator]);
@@ -240,6 +257,23 @@ function parseExpression(expression, hasNot = false) {
 
   let charHasNot = false;
   let tempHasNot = false;
+
+  // Iterate through operators and split by it
+  // Find if there are variables containing multiple characters
+  for (const tempOperator of LogicNode.operators) {
+    let tokenSplit = expression.split(tempOperator);
+    if (tokenSplit.length > 1) {
+      // Go through each index of the tokenSplit array
+      // And check if the token has multiple characters or none
+      for (const token of tokenSplit) {
+        if (token.length != 1) {
+          throw new errors.ValueError("You cannot have a variable with multiple characters.");
+        }
+      }
+      // Everything was okay, stop searching through operators
+      break;
+    }
+  }
   for (const index in expression) {
     let char = expression[index];
     // Check for open parenthesis
@@ -264,7 +298,7 @@ function parseExpression(expression, hasNot = false) {
           }
         }
 
-        let exp = parseExpression(expression.substring(last, index), tempHasNot)
+        let exp = parseExpression(expression.substring(last, index), tempHasNot, operatorType)
         if (index === expression.length - 1 && last === 0) {
           hasNot = tempHasNot;
         }
@@ -310,6 +344,7 @@ function parseExpression(expression, hasNot = false) {
             "hasNot": hasNot,
             "left": left,
             "operator": operator,
+            "operatorType": operatorType,
             "right": right
           };
 
@@ -374,6 +409,7 @@ function parseExpression(expression, hasNot = false) {
   if (operator == null && right == null) {
     hasNot = left["hasNot"];
     operator = left["operator"];
+    operatorType = left["operatorType"];
     right = left["right"];
     left = left["left"];
   }
@@ -382,6 +418,7 @@ function parseExpression(expression, hasNot = false) {
       hasNot,
       left,
       operator,
+      operatorType,
       right
     },
     variables
