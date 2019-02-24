@@ -1,7 +1,7 @@
 # LogicParser
 This is a node.js version of FellowHashbrown's [PyLogic](https://github.com/FellowHashbrown/PyLogic). If you don't have the time to read his, or want to know about mine, I'll break it down for you.
 
-This is Python project for parsing and evaluating logical expressions such as those in Discrete Mathematics.
+This is a Node.js project for parsing and evaluating logical expressions such as those in Discrete Mathematics.
 
 ## Process of Parsing
 In order to parse a logical expression, LogicParser will use the `parseExpression` function in logic/tree.js to iterate through the entire expression. It removes all the spaces beforehand because spaces don't necessarily matter in the parsing.
