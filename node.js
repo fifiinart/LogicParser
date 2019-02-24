@@ -27,7 +27,6 @@ module.exports = class LogicNode {
       this.left = left;
       this.right = right;
       this.hasNot = hasNot;
-      this.operatorType = operatorType ? operatorType : this.discrete;
     }
 
     // Check if nodeObj exists
@@ -68,6 +67,8 @@ module.exports = class LogicNode {
         this.operatorType = nodeObj["operatorType"];
       }
     }
+
+    this.operatorType = this.operatorType ? this.operatorType : this.discrete;
 
     // Load left and right values as they should (LogicNode | LogicVar)
     if (this.left instanceof Object) {
@@ -132,7 +133,10 @@ module.exports = class LogicNode {
   getLeft() {
     return this.left;
   }
-
+  static get discrete() {return 1}
+  static get pseudo() {return 0}
+  static get java() {return 2}
+  static get operators() {return ["~", "^", "v", "->", "<->", "|", "⬇"]}
   getRight() {
     return this.right;
   }
