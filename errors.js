@@ -22,7 +22,13 @@ class MissingValue extends Error {
     this.name = "MissingValue";
   }
 }
+class ValueError extends Error {
+  constructor(message, fileName, lineNumber) {
+    super(message, fileName, lineNumber);
+    this.name = "ValueError";
+  }
+}
 module.exports = {
   UnbalancedParentheses,
-  MissingTruthValue, OperatorMismatch, MissingValue
+  MissingTruthValue, OperatorMismatch, MissingValue, ValueError
 };
