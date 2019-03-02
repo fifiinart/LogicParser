@@ -316,7 +316,6 @@ function parseExpression(expression, hasNot = false, operatorType = null) {
 
   // Check if expression is valid
   if (!isExpressionValid(expression)) {
-      console.log('exp', expression)
       throw new errors.ValueError("That is an invalid expression.");
   }
 
