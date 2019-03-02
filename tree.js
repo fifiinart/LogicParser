@@ -10,7 +10,7 @@ operators = {
 
   "OR": "v",
   "or": "v",
-  "||": "v",
+  "\|\|": "v",
 
   "AND": "^",
   "and": "^",
@@ -241,7 +241,7 @@ function isExpressionValid(expression) {
                     // Check if there are any operators in the item
                     let found = false;
                     for (const tempOp of LogicNode.operators) {
-                            if (~item.indexOf(tempOp)) {
+                        if (~item.indexOf(tempOp)) {
                             found = true;
                             break;
                         }
@@ -282,7 +282,7 @@ function parseExpression(expression, hasNot = false, operatorType = null) {
 
       // Iterate through operator types
       for (const opType of [LogicNode.discrete, LogicNode.java, LogicNode.pseudo]) {
-        if (valueIn(operator.toLowerCase(), operators[opType])) {
+        if (valueIn(operator.toLowerCase(), LogicNode.operators[opType])) {
           operatorType = opType;
           break;
         }
@@ -292,10 +292,13 @@ function parseExpression(expression, hasNot = false, operatorType = null) {
         operatorType = LogicNode.discrete;
       }
     }
-
     if (~expression.indexOf(operator)) {
       regex = new RegExp(operator, 'g')
-      expression = expression.replace(regex, operators[operator]);
+      if (operator == "\|\|") {
+        expression = expression.replace(/\|\|/g, operators[operator])
+      } else {
+        expression = expression.replace(regex, operators[operator]);
+      }
     }
   }
 
@@ -313,6 +316,7 @@ function parseExpression(expression, hasNot = false, operatorType = null) {
 
   // Check if expression is valid
   if (!isExpressionValid(expression)) {
+      console.log('exp', expression)
       throw new errors.ValueError("That is an invalid expression.");
   }
 
