@@ -1,6 +1,10 @@
 const errors = require("./errors.js");
 const LogicNode = require("./node.js");
-const { valueIn, range, center } = require("./globals.js")
+const {
+  valueIn,
+  range,
+  center
+} = require("./globals.js")
 operators = {
   "NAND": "|",
   "nand": "|",
@@ -82,14 +86,16 @@ module.exports = class LogicTree {
     let truthValues = []
 
     // Iterate through 2 ** variables.length possible combinations
-    for (const value in range(0, 2 ** this.getVariables().length)) {
+    for (const value in range(0, 2 ** this.getVariables()
+        .length)) {
 
       // Iterate through all variables
       let truthValue = {};
       for (const index in this.getVariables()) {
 
         // Get the power based off of the variable's index in the list
-        let power = this.getVariables().length - index - 1;
+        let power = this.getVariables()
+          .length - index - 1;
         let variable = this.getVariables()[index];
 
         // Get the truth value using the getTruthValue method
@@ -217,55 +223,58 @@ getTruthValue = function(value, power) {
 
 function isExpressionValid(expression) {
 
-    // Remove parentheses and spaces and nots
-    expression = expression.replace("(", "").replace(")", "").replace(" ", "").replace("~", "");
+  // Remove parentheses and spaces and nots
+  expression = expression.replace("(", "")
+    .replace(")", "")
+    .replace(" ", "")
+    .replace("~", "");
 
-    // Iterate through operators and split by it
-    // Find if there are variables containing multiple characters
-    for (const operator of LogicNode.operators) {
-        let tokenSplit = expression.split(operator);
-        if (tokenSplit.length > 1) {
+  // Iterate through operators and split by it
+  // Find if there are variables containing multiple characters
+  for (const operator of LogicNode.operators) {
+    let tokenSplit = expression.split(operator);
+    if (tokenSplit.length > 1) {
 
-            // Go through each index of the tokenSplit array
-            // And check if the item has multiple characters
-            for (const item of tokenSplit) {
+      // Go through each index of the tokenSplit array
+      // And check if the item has multiple characters
+      for (const item of tokenSplit) {
 
-                // Check if length of item is greater than 1
-                if (item.length > 1) {
+        // Check if length of item is greater than 1
+        if (item.length > 1) {
 
-                    // Check if item has an operator in last or first index
-                    if (item[0] in LogicNode.operators || item[item.length - 1] in LogicNode.operators) {
-                        return false;
-                    }
+          // Check if item has an operator in last or first index
+          if (item[0] in LogicNode.operators || item[item.length - 1] in LogicNode.operators) {
+            return false;
+          }
 
-                    // Check if there are any operators in the item
-                    let found = false;
-                    for (const tempOp of LogicNode.operators) {
-                        if (~item.indexOf(tempOp)) {
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    // If no operators are found, the item is invalid
-                    // It just has "ab" or something of the sort
-                    if (!found) {
-                        return false;
-                    }
-
-                    // recursive call
-                    return isExpressionValid(item);
-                }
-
-                // Check if length of item is 0
-                else if (item.length == 0) {
-                    return false;
-                }
+          // Check if there are any operators in the item
+          let found = false;
+          for (const tempOp of LogicNode.operators) {
+            if (~item.indexOf(tempOp)) {
+              found = true;
+              break;
             }
-        }
-    }
+          }
 
-    return true;
+          // If no operators are found, the item is invalid
+          // It just has "ab" or something of the sort
+          if (!found) {
+            return false;
+          }
+
+          // recursive call
+          return isExpressionValid(item);
+        }
+
+        // Check if length of item is 0
+        else if (item.length == 0) {
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
 }
 
 function parseExpression(expression, hasNot = false, operatorType = null) {
@@ -316,7 +325,7 @@ function parseExpression(expression, hasNot = false, operatorType = null) {
 
   // Check if expression is valid
   if (!isExpressionValid(expression)) {
-      throw new errors.ValueError("That is an invalid expression.");
+    throw new errors.ValueError("That is an invalid expression.");
   }
 
   for (const index in expression) {

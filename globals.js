@@ -20,7 +20,8 @@ function center(value, length, fill = " ") {
   let padding = length - value.length;
   let start = Math.ceil(padding / 2);
   let end = padding - start;
-  return value.padStart(value.length + start, fill).padEnd(value.length + start + end, fill);
+  return value.padStart(value.length + start, fill)
+    .padEnd(value.length + start + end, fill);
 }
 
 module.exports = {

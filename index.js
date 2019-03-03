@@ -14,11 +14,10 @@ standardInput.setEncoding('utf-8');
 console.log("Please input some logical expressions. To exit, type 'exit'.");
 
 // When user input data and click enter key.
-standardInput.on('data', function (data) {
+standardInput.on('data', function(data) {
   if (data === 'exit\n' || data === 'exit') {
     process.exit()
-  }
-  else {
+  } else {
     flag = false;
     try {
       tree = new LogicTree(data);
@@ -31,7 +30,8 @@ standardInput.on('data', function (data) {
     if (flag) {
       console.log("Invalid expression. Try again.");
     } else {
-      console.log(tree.makeTable().join("\n"));
+      console.log(tree.makeTable()
+        .join("\n"));
     }
   }
 });
