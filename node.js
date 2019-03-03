@@ -4,7 +4,9 @@ const LogicVar = require("./var.js");
 module.exports = class LogicNode {
 
   constructor(operator = null, left = null, right = null, hasNot = false, operatorType = null, nodeObj = null) {
-    [this.not, this.and, this.or, this.implies, this.biconditional, this.nand, this.nor] = [...Array(7).keys()];
+    [this.not, this.and, this.or, this.implies, this.biconditional, this.nand, this.nor] = [...Array(7)
+      .keys()
+    ];
 
     this.pseudo = 0;
     this.discrete = 1;
@@ -92,10 +94,12 @@ module.exports = class LogicNode {
     let left = "" + this.getLeft();
     let right = "" + this.getRight();
 
-    if (this.getLeft() instanceof LogicNode && !this.getLeft().getHasNot()) {
+    if (this.getLeft() instanceof LogicNode && !this.getLeft()
+      .getHasNot()) {
       left = "(" + left + ")";
     }
-    if (this.getRight() instanceof LogicNode && !this.getRight().getHasNot()) {
+    if (this.getRight() instanceof LogicNode && !this.getRight()
+      .getHasNot()) {
       right = "(" + right + ")";
     }
 
@@ -114,8 +118,10 @@ module.exports = class LogicNode {
     }
 
     return (
-      this.getLeft().compare(value.getLeft()) &&
-      this.getRight().compare(value.getRight()) &&
+      this.getLeft()
+      .compare(value.getLeft()) &&
+      this.getRight()
+      .compare(value.getRight()) &&
       this.getOperatorType == value.getOperatorType() &&
       this.getHasNot() == value.getHasNot()
     );
@@ -133,10 +139,18 @@ module.exports = class LogicNode {
   getLeft() {
     return this.left;
   }
-  static get discrete() {return 1}
-  static get pseudo() {return 0}
-  static get java() {return 2}
-  static get operators() {return ["~", "^", "v", "->", "<->", "|", "⬇"]}
+  static get discrete() {
+    return 1
+  }
+  static get pseudo() {
+    return 0
+  }
+  static get java() {
+    return 2
+  }
+  static get operators() {
+    return ["~", "^", "v", "->", "<->", "|", "⬇"]
+  }
   getRight() {
     return this.right;
   }
@@ -152,7 +166,8 @@ module.exports = class LogicNode {
     let evaluations = [];
 
     // Get left evaluations
-    let leftEvaluations = this.getLeft().getTruthValues(truthValues);
+    let leftEvaluations = this.getLeft()
+      .getTruthValues(truthValues);
     for (const leftEvaluation of leftEvaluations) {
       if (!valueIn(leftEvaluation, evaluations)) {
         evaluations.push(leftEvaluation);
@@ -160,7 +175,8 @@ module.exports = class LogicNode {
     }
 
     // Get right evaluations
-    let rightEvaluations = this.getRight().getTruthValues(truthValues);
+    let rightEvaluations = this.getRight()
+      .getTruthValues(truthValues);
     for (const rightEvaluation of rightEvaluations) {
       if (!valueIn(rightEvaluation, evaluations)) {
         evaluations.push(rightEvaluation);
@@ -188,8 +204,10 @@ module.exports = class LogicNode {
 
   evaluate(truthValue = {}) {
 
-    let left = this.getLeft().evaluate(truthValue);
-    let right = this.getRight().evaluate(truthValue);
+    let left = this.getLeft()
+      .evaluate(truthValue);
+    let right = this.getRight()
+      .evaluate(truthValue);
 
     if (this.operator == this.and) {
       if (this.getHasNot()) {

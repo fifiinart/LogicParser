@@ -30,5 +30,8 @@ class ValueError extends Error {
 }
 module.exports = {
   UnbalancedParentheses,
-  MissingTruthValue, OperatorMismatch, MissingValue, ValueError
+  MissingTruthValue,
+  OperatorMismatch,
+  MissingValue,
+  ValueError
 };
