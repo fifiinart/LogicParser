@@ -1,7 +1,7 @@
 // Based off of https://repl.it/@FellowHashbrown/Logic-Parser
 const LogicTree = require("./tree.js");
 let flag = false;
-let showError = false;
+let debug = false;
 let tree;
 // Input expression:
 // Get process.stdin as the standard input object.
@@ -22,7 +22,7 @@ standardInput.on('data', function(data) {
     try {
       tree = new LogicTree(data);
     } catch (e) {
-      if (showError) {
+      if (debug) {
         throw e;
       }
       flag = true;

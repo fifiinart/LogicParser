@@ -4,14 +4,15 @@ const LogicVar = require("./var.js");
 module.exports = class LogicNode {
 
   constructor(operator = null, left = null, right = null, hasNot = false, operatorType = null, nodeObj = null) {
+    // Sets operator to a range of 0 to 6
     [this.not, this.and, this.or, this.implies, this.biconditional, this.nand, this.nor] = [...Array(7)
       .keys()
     ];
-
+    // Sets operator type variables to a range of 0 to 2
     this.pseudo = 0;
     this.discrete = 1;
     this.java = 2;
-
+    // Defines a 2d array of operators
     this.operators = [
       ["not", "and", "or", "implies", "iff", "nand", "nor"],
       ["~", "^", "v", "->", "<->", "|", "⬇"],
@@ -70,6 +71,7 @@ module.exports = class LogicNode {
       }
     }
 
+    // Try loading operatorType
     this.operatorType = this.operatorType ? this.operatorType : this.discrete;
 
     // Load left and right values as they should (LogicNode | LogicVar)
@@ -90,10 +92,10 @@ module.exports = class LogicNode {
     }
   }
 
-  toString() {
+  toString() { // Custom stringification method
     let left = "" + this.getLeft();
     let right = "" + this.getRight();
-
+    // Puts in parenthases if left or right is a LogicNode
     if (this.getLeft() instanceof LogicNode && !this.getLeft()
       .getHasNot()) {
       left = "(" + left + ")";
@@ -102,9 +104,9 @@ module.exports = class LogicNode {
       .getHasNot()) {
       right = "(" + right + ")";
     }
-
+    // Get operator
     let operator = this.getOperator();
-
+    // Adds a ~ if value/node has a not
     if (this.getHasNot()) {
       return `~(${left} ${operator} ${right})`
     }
@@ -112,7 +114,7 @@ module.exports = class LogicNode {
     return `${left} ${operator} ${right}`;
   }
 
-  compare(value) {
+  compare(value) { // Custom comparison function
     if (!(value instanceof LogicNode)) {
       return false;
     }
@@ -127,7 +129,7 @@ module.exports = class LogicNode {
     );
   }
 
-
+  // Getter functions
   getOperatorType() {
     return this.operatorType;
   }
@@ -193,7 +195,7 @@ module.exports = class LogicNode {
         "value": this.evaluate(truthValue)
       }
 
-      // Only add evaluation if it doesn't exist already exist
+      // Only add evaluation if it doesn't already exist
       if (!valueIn(evaluation, evaluations)) {
         evaluations.push(evaluation);
       }
