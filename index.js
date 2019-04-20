@@ -1,6 +1,5 @@
 // Based off of https://repl.it/@FellowHashbrown/Logic-Parser
 const LogicTree = require("./tree.js");
-let flag = false;
 let debug = false;
 let tree;
 // Input expression:
@@ -21,17 +20,14 @@ standardInput.on('data', function(data) {
     flag = false;
     try {
       tree = new LogicTree(data);
-    } catch (e) {
-      if (debug) {
-        throw e;
-      }
-      flag = true;
-    }
-    if (flag) {
-      console.log("Invalid expression. Try again.");
-    } else {
       console.log(tree.makeTable()
         .join("\n"));
+    } catch (e) {
+      if (debug === true) {
+        throw e;
+      } else {
+        console.log("Invalid expression. Try again.");
+      }
     }
   }
 });
