@@ -1,4 +1,4 @@
-valueIn = function(item, array) {
+function valueIn(item, array) {
   for (let i of array) {
     slice = array.slice(i, i + item.length);
     if (i === item) {
