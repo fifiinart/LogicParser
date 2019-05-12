@@ -18,7 +18,7 @@ module.exports = {
         request: msg,
         error: debug ? e : "Invalid expression"
       };
-    },
+    };
     return result;
   }
 }
