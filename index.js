@@ -1,33 +1,24 @@
-// Based off of https://repl.it/@FellowHashbrown/Logic-Parser
-const LogicTree = require("./tree.js");
-let debug = false;
-let tree;
-// Input expression:
-// Get process.stdin as the standard input object.
-var standardInput = process.stdin;
-
-// Set input character encoding.
-standardInput.setEncoding('utf-8');
-
-// Prompt user to input data in console.
-console.log("Please input some logical expressions. To exit, type 'exit'.");
-
-// When user input data and click enter key.
-standardInput.on('data', function(data) {
-  if (data === 'exit\n' || data === 'exit') {
-    process.exit()
-  } else {
-    flag = false;
+module.exports = {
+  version: require('./package.json')
+    .version,
+  eval(msg, debug = false) {
+    let result, table;
     try {
-      tree = new LogicTree(data);
-      console.log(tree.makeTable()
-        .join("\n"));
+      table = new LogicTree(data)
+        .makeTable()
+        .join("\n");
+      result = {
+        success: true,
+        request: msg,
+        result: table
+      };
     } catch (e) {
-      if (debug === true) {
-        throw e;
-      } else {
-        console.log("Invalid expression. Try again.");
-      }
-    }
+      result = {
+        success: false,
+        request: msg,
+        error: debug ? e : "Invalid expression"
+      };
+    },
+    return result;
   }
-});
+}

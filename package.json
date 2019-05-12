@@ -1,0 +1,19 @@
+{
+  "name": "discrete-logic-parser",
+  "version": "1.0.0",
+  "description": "A parser meant to give truth tables to logical expressions.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fifiinart/LogicParser-NPM.git"
+  },
+  "author": "Fifi Art",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fifiinart/LogicParser-NPM/issues"
+  },
+  "homepage": "https://github.com/fifiinart/LogicParser-NPM#readme"
+}
