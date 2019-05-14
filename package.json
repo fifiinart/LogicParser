@@ -1,6 +1,6 @@
 {
   "name": "discrete-logic-parser",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A parser meant to give truth tables to logical expressions.",
   "main": "index.js",
   "scripts": {
